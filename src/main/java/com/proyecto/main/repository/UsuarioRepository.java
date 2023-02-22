@@ -1,17 +1,17 @@
-package com.proyecto.repository;
+package com.proyecto.main.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.proyecto.enums.PerfilUsuario;
-import com.proyecto.model.Usuario;
+import com.proyecto.main.enums.PerfilUsuario;
+import com.proyecto.main.model.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 
 	List<Usuario> findByPerfil(PerfilUsuario perfil);
 	
-	Usuario findByNombreUsuario(String nombreUsuario);
+	Usuario findByNombre(String nombreUsuario);
 }

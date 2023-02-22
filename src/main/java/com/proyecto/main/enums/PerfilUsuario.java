@@ -1,4 +1,4 @@
-package com.proyecto.enums;
+package com.proyecto.main.enums;
 
 public enum PerfilUsuario {
 	ADMINISTRADOR, INVITADO

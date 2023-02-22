@@ -1,12 +1,12 @@
-package com.proyecto.service;
+package com.proyecto.main.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.proyecto.model.Usuario;
-import com.proyecto.repository.UsuarioRepository;
+import com.proyecto.main.model.Usuario;
+import com.proyecto.main.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
@@ -18,7 +18,7 @@ public class UsuarioService {
 	}
 	
 	public Usuario buscarUsuario(String nombreUsuario) {
-		return ur.findByNombreUsuario(nombreUsuario);
+		return ur.findByNombre(nombreUsuario);
 	}
 	
 	public Page<Usuario> obtenerUsuarios(int page){

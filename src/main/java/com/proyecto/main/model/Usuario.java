@@ -1,6 +1,6 @@
-package com.proyecto.model;
+package com.proyecto.main.model;
 
-import com.proyecto.enums.PerfilUsuario;
+import com.proyecto.main.enums.PerfilUsuario;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

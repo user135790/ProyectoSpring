@@ -1,4 +1,4 @@
-package com.proyecto.controller;
+package com.proyecto.main.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,22 +6,31 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.proyecto.model.Usuario;
-import com.proyecto.service.UsuarioService;
+import com.proyecto.main.model.Usuario;
+import com.proyecto.main.service.UsuarioService;
 
 @RestController
+@RequestMapping("/usuarios")
+@CrossOrigin("*")
 public class UsuarioController {
 
 	@Autowired
 	private UsuarioService us;
 	
-	@GetMapping("/usuarios/{page}")
+	@GetMapping("/")
+	public ResponseEntity<?> get(){
+		return ResponseEntity.ok("HOLA");
+	}
+	
+	@GetMapping("/{page}")
 	public ResponseEntity<?> obtenerUsuarios(@PathVariable int page){
 		Page<Usuario> usuarios = us.obtenerUsuarios(page);
 		if(usuarios != null) {
@@ -31,7 +40,7 @@ public class UsuarioController {
 		}
 	}
 	
-	@PostMapping("usuarios/create")
+	@PostMapping("/create")
 	public ResponseEntity<?> crearUsuarios(@Validated @RequestBody Usuario usuario){
 		Usuario usuarioCreado = us.crearUsuario(usuario);
 		if(usuarioCreado != null) {
@@ -41,7 +50,7 @@ public class UsuarioController {
 		}
 	}
 	
-	@GetMapping("usuarios/{nombreUsuario}")
+	@GetMapping("/find/{nombreUsuario}")
 	public ResponseEntity<?> buscarUsuario(@PathVariable String nombreUsuario){
 		Usuario busqueda = us.buscarUsuario(nombreUsuario);
 		if(busqueda != null) {
