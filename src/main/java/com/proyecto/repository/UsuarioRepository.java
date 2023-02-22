@@ -12,4 +12,6 @@ import com.proyecto.model.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 
 	List<Usuario> findByPerfil(PerfilUsuario perfil);
+	
+	Usuario findByNombreUsuario(String nombreUsuario);
 }
