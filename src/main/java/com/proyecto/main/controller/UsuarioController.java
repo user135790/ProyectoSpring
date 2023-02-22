@@ -25,16 +25,11 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService us;
 	
-	@GetMapping("/")
-	public ResponseEntity<?> get(){
-		return ResponseEntity.ok("HOLA");
-	}
-	
 	@GetMapping("/{page}")
 	public ResponseEntity<?> obtenerUsuarios(@PathVariable int page){
 		Page<Usuario> usuarios = us.obtenerUsuarios(page);
 		if(usuarios != null) {
-			return ResponseEntity.ok(usuarios);
+			return ResponseEntity.ok(usuarios.get());
 		}else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pagina no existe");
 		}

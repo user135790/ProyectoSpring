@@ -43,7 +43,6 @@ public class Usuario {
 	private String contrasena;
 	
 	@NotNull(message = "campo no puede ser nulo")
-	@NotBlank(message = "campo no puede solo un espacio")
 	@Column(name = "perfil_usuario", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private PerfilUsuario perfil;
