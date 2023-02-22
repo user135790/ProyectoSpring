@@ -55,4 +55,13 @@ public class UsuarioController {
 		}
 	}
 	
+	@PostMapping("/login/{nombre}/{contrasena}")
+	public ResponseEntity<?> iniciarSesion(@PathVariable String nombre, @PathVariable String contrasena){
+		if(us.iniciarSesion(nombre, contrasena)) {
+			return ResponseEntity.ok("Inicio de sesion exitoso");
+		}else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Acceso Denegado");
+		}
+	}
+	
 }
