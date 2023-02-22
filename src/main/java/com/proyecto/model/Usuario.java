@@ -39,7 +39,7 @@ public class Usuario {
 	@NotBlank(message = "campo contrasena no puede solo un espacio")
 	@Size(min = 8, message = "campo contrasena debe tener al menos 8 caracteres")
 	@Column(name = "contrasena_usuario", nullable = false)
-	@Pattern(regexp = "(?=.*[A-Z])(?=.*\\d)",message = "Al menos debe haber una mayuscula y una minuscula")
+	@Pattern(regexp = "(?=.*[A-Z])(.*\\d.*)",message = "Al menos debe haber una mayuscula y una minuscula")
 	private String contrasena;
 	
 	@NotNull(message = "campo no puede ser nulo")
