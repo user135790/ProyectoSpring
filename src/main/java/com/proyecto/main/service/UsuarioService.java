@@ -14,7 +14,6 @@ public class UsuarioService {
 	private UsuarioRepository ur;
 	
 	public Usuario crearUsuario(Usuario usuario){
-		usuario.setContrasena(null);
 		return ur.save(usuario);
 	}
 	
