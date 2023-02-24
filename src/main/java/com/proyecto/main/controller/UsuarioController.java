@@ -2,9 +2,9 @@ package com.proyecto.main.controller;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.main.dto.SesionDTO;
+import com.proyecto.main.enums.PerfilUsuario;
 import com.proyecto.main.model.Usuario;
 import com.proyecto.main.service.UsuarioService;
 
@@ -43,13 +44,23 @@ public class UsuarioController {
 	    return errors;
 	}
 	
-	@GetMapping("/{page}")
-	public ResponseEntity<?> obtenerUsuarios(@PathVariable int page){
-		Page<Usuario> usuarios = us.obtenerUsuarios(page);
+	@GetMapping("/")
+	public ResponseEntity<?> obtenerUsuarios(){
+		List<Usuario> usuarios = us.obtenerUsuarios();
 		if(usuarios != null) {
-			return ResponseEntity.ok(usuarios.get());
+			return ResponseEntity.ok(usuarios);
 		}else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pagina no existe");
+		}
+	}
+	
+	@GetMapping("/perfil/{perfil}")
+	public ResponseEntity<?> buscarUsuariosPorPerfil(@PathVariable PerfilUsuario perfil){
+		List<Usuario> usuarios = us.buscarPorPerfil(perfil);
+		if(usuarios != null) {
+			return ResponseEntity.ok(usuarios);
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existen usuarios");
 		}
 	}
 	
@@ -75,8 +86,9 @@ public class UsuarioController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> iniciarSesion(@RequestBody SesionDTO sesion){
-		if(us.iniciarSesion(sesion.getNombre(), sesion.getContrasena())) {
-			return ResponseEntity.ok("Inicio de sesion exitoso");
+		Usuario perfil = us.iniciarSesion(sesion.getNombre(), sesion.getContrasena());
+		if(perfil != null) {
+			return ResponseEntity.ok(perfil);
 		}else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Acceso Denegado");
 		}

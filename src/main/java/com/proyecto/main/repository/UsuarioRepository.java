@@ -12,6 +12,7 @@ import com.proyecto.main.model.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 
+	@Query("SELECT u FROM Usuario u WHERE ?1 = u.perfil")
 	List<Usuario> findByPerfil(PerfilUsuario perfil);
 	
 	@Query("SELECT u FROM Usuario u WHERE ?1 = u.nombre")

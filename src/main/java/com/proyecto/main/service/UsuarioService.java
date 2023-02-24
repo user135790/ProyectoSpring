@@ -1,10 +1,11 @@
 package com.proyecto.main.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.proyecto.main.enums.PerfilUsuario;
 import com.proyecto.main.model.Usuario;
 import com.proyecto.main.repository.UsuarioRepository;
 
@@ -21,17 +22,21 @@ public class UsuarioService {
 		return ur.findByNombre(nombreUsuario);
 	}
 	
-	public Page<Usuario> obtenerUsuarios(int page){
-		return ur.findAll(Pageable.ofSize(3).withPage(page));
+	public List<Usuario> obtenerUsuarios(){
+		return ur.findAll();
+	}
+	
+	public List<Usuario> buscarPorPerfil(PerfilUsuario perfil){
+		return ur.findByPerfil(perfil);
 	}
 
-	public boolean iniciarSesion(String usuario, String contrasena) {
+	public Usuario iniciarSesion(String usuario, String contrasena) {
 		Usuario usuarioEncontrado=ur.findByNombre(usuario);
 		if(usuarioEncontrado != null) {
 			if(usuario.equals(usuarioEncontrado.getNombre()) && contrasena.equals(usuarioEncontrado.getContrasena())) {
-				return true;
+				return usuarioEncontrado;
 			}
 		}
-		return false;
+		return null;
 	}
 }
