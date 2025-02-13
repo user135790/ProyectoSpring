@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.proyecto.main.enums.PerfilUsuario;
 import com.proyecto.main.model.Usuario;
-import com.proyecto.main.repository.UsuarioRepository;
+import com.proyecto.main.service.UsuarioService;
 
 @SpringBootApplication
 public class ProyectoSpringApplication {
@@ -15,9 +15,9 @@ public class ProyectoSpringApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProyectoSpringApplication.class, args);
 	}
-	
+
 	@Bean
-	public CommandLineRunner demo(UsuarioRepository repository) {
+	public CommandLineRunner demo(UsuarioService service) {
 		return (args) -> {
 			// save a few customers
 		Usuario usuario = new Usuario();
@@ -25,7 +25,7 @@ public class ProyectoSpringApplication {
 		usuario.setContrasena("Admin123");
 		usuario.setCorreoElectronico("admin@gmail.com");
 		usuario.setPerfil(PerfilUsuario.ADMINISTRADOR);
-		repository.save(usuario);
+		service.crearUsuario(usuario);
 		};
 	}
 }

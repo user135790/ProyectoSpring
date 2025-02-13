@@ -1,5 +1,12 @@
 package com.proyecto.main.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.proyecto.main.enums.PerfilUsuario;
 
 import jakarta.persistence.Column;
@@ -18,7 +25,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+public class Usuario implements UserDetails{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -82,6 +89,44 @@ public class Usuario {
 	public void setPerfil(PerfilUsuario perfil) {
 		this.perfil = perfil;
 	}
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> array = new ArrayList<>();
+		GrantedAuthority rol = new SimpleGrantedAuthority(this.getPerfil().toString());
+		array.add(rol);
+		return array;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.getContrasena();
+    }
+
+    @Override
+    public String getUsername() {
+    	return this.nombre;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return  true;
+    }
 	
 	
 }

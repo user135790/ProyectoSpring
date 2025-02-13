@@ -3,10 +3,14 @@ package com.proyecto.main.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,15 +26,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyecto.main.dto.SesionDTO;
 import com.proyecto.main.enums.PerfilUsuario;
 import com.proyecto.main.model.Usuario;
+import com.proyecto.main.security.TokenService;
 import com.proyecto.main.service.UsuarioService;
 
 @RestController
 @RequestMapping("/usuarios")
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("**")
 public class UsuarioController {
 
 	@Autowired
 	private UsuarioService us;
+
+	@Autowired
+	AuthenticationManager authenticationManager;
+
+	@Autowired
+	TokenService tokenService;
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -84,14 +95,16 @@ public class UsuarioController {
 		}
 	}
 	
-	@PostMapping("/login")
-	public ResponseEntity<?> iniciarSesion(@RequestBody SesionDTO sesion){
-		Usuario perfil = us.iniciarSesion(sesion.getNombre(), sesion.getContrasena());
-		if(perfil != null) {
-			return ResponseEntity.ok(perfil);
-		}else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Acceso Denegado");
-		}
+	@PostMapping("/auth")
+	public ResponseEntity<?> login(@RequestBody SesionDTO sesion){
+		String token;	
+		Authentication auth = new UsernamePasswordAuthenticationToken(sesion.getNombre(), sesion.getContrasena(), us.obtenerRol(sesion.getNombre()));
+		authenticationManager.authenticate(auth);
+		System.out.println(auth.getAuthorities().stream().toList());
+		token = tokenService.createJWT((String)auth.getPrincipal(),auth.getAuthorities().stream().toList().get(0).getAuthority());	
+		return ResponseEntity.ok(Map.of("token",token));
+		
 	}
+
 	
 }
